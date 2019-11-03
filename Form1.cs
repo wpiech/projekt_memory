@@ -26,6 +26,9 @@ namespace apka
 
         private void label1_Click(object sender, EventArgs e)
         {
+            if (firstclicked != null && secondclicked != null)
+                return;
+
             Label clickedLabel = sender as Label;
 
             if (clickedLabel == null)
@@ -39,6 +42,44 @@ namespace apka
                 firstclicked.ForeColor = Color.White;
                 return;
             }
+
+            secondclicked = clickedLabel;
+            secondclicked.ForeColor = Color.White;
+
+            check();
+
+            if (firstclicked.Text == secondclicked.Text)
+            {
+                firstclicked = null;
+                secondclicked = null;
+            }
+            else
+
+                 timer1.Start();
+        }
+
+        private void check()
+        {
+            Label label;
+            for (int i=0; i< tableLayoutPanel1.Controls.Count; i++)
+            {
+                label = tableLayoutPanel1.Controls[i] as Label;
+                if (label != null && label.ForeColor == label.BackColor)
+                    return;
+
+            }
+            MessageBox.Show("Brawo! Dopasowałeś wszystkie obrazki.");
+            Close();
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+
+            firstclicked.ForeColor = firstclicked.BackColor;
+            secondclicked.ForeColor = secondclicked.BackColor;
+
+            firstclicked = null;
+            secondclicked = null;
         }
 
         private void AssignIconsToSquares()
