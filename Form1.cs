@@ -24,6 +24,23 @@ namespace apka
             AssignIconsToSquares();
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+            Label clickedLabel = sender as Label;
+
+            if (clickedLabel == null)
+                return;
+            if (clickedLabel.ForeColor == Color.White)
+                return;
+
+            if (firstclicked == null) 
+            {
+                firstclicked = clickedLabel;
+                firstclicked.ForeColor = Color.White;
+                return;
+            }
+        }
+
         private void AssignIconsToSquares()
         { Label label;
             int randomnumber;
