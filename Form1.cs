@@ -12,87 +12,88 @@ namespace apka
 {
     public partial class Form1 : Form
     {
-        Random random = new Random();
-        List<string> icons = new List<string>()
+        Random zmienna = new Random(); //lista obrazków
+        List<string> obrazki = new List<string>()
         {"[", "[",".", ".", "T", "T", "I", "I",
             "Q", "Q", "P", "P", "6", "6", "A", "A"
         };
-        Label firstclicked, secondclicked;
+        Label pierwszy, drugi;
         public Form1()
         {
             InitializeComponent();
-            AssignIconsToSquares();
+            obrazkiikwadraty();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e) //zmiana z zakrytych na odkryte
         {
-            if (firstclicked != null && secondclicked != null)
+            if (pierwszy != null && drugi != null)
                 return;
 
-            Label clickedLabel = sender as Label;
+            Label wybrany = sender as Label;
 
-            if (clickedLabel == null)
+            if (wybrany == null)
                 return;
-            if (clickedLabel.ForeColor == Color.White)
+            if (wybrany.ForeColor == Color.White)
                 return;
 
-            if (firstclicked == null) 
+            if (pierwszy == null) 
             {
-                firstclicked = clickedLabel;
-                firstclicked.ForeColor = Color.White;
+                pierwszy = wybrany;
+                pierwszy.ForeColor = Color.White;
                 return;
             }
 
-            secondclicked = clickedLabel;
-            secondclicked.ForeColor = Color.White;
+            drugi = wybrany;
+            drugi.ForeColor = Color.White;
 
-            check();
+            wygrana();
 
-            if (firstclicked.Text == secondclicked.Text)
+            if (pierwszy.Text == drugi.Text) //jeśli pasują zostają
             {
-                firstclicked = null;
-                secondclicked = null;
+                pierwszy = null;
+                drugi = null;
             }
             else
 
                  timer1.Start();
         }
 
-        private void check()
+        private void wygrana() //sprawdzenie czy dopasowano wszystkie obrazki
         {
-            Label label;
+            Label sprawdzenie;
             for (int i=0; i< tableLayoutPanel1.Controls.Count; i++)
             {
-                label = tableLayoutPanel1.Controls[i] as Label;
-                if (label != null && label.ForeColor == label.BackColor)
+                sprawdzenie = tableLayoutPanel1.Controls[i] as Label;
+                if (sprawdzenie != null && sprawdzenie.ForeColor == sprawdzenie.BackColor)
                     return;
 
             }
-            MessageBox.Show("Brawo! Dopasowałeś wszystkie obrazki.");
+            MessageBox.Show("Brawo! Wygrałeś.");
             Close();
         }
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e) //chowanie obrazków po kliknięciu
         {
             timer1.Stop();
 
-            firstclicked.ForeColor = firstclicked.BackColor;
-            secondclicked.ForeColor = secondclicked.BackColor;
+            pierwszy.ForeColor = pierwszy.BackColor;
+            drugi.ForeColor = drugi.BackColor;
 
-            firstclicked = null;
-            secondclicked = null;
+            pierwszy = null;
+            drugi = null;
         }
 
-        private void AssignIconsToSquares()
-        { Label label;
-            int randomnumber;
+        private void obrazkiikwadraty() //przypisanie obrazków do kwadratów
+        { Label plansza;
+            int numer;
             for(int i = 0; i<tableLayoutPanel1.Controls.Count; i++)
             { if (tableLayoutPanel1.Controls[i] is Label)
-                    label = (Label)tableLayoutPanel1.Controls[i];
+                    plansza = (Label)tableLayoutPanel1.Controls[i]; 
+               
                 else
                     continue;
-                randomnumber = random.Next(0, icons.Count);
-                label.Text = icons[randomnumber];
-                icons.RemoveAt(randomnumber);
+                numer = zmienna.Next(0, obrazki.Count);
+                plansza.Text = obrazki[numer];
+                obrazki.RemoveAt(numer);
             }
         }
     }
